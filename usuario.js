@@ -37,7 +37,7 @@ function getUsuario(idUsuario){
     return usuarios.find(usuario =>usuario.id === idUsuario)
 }
 
-moduleexport ={
+module.exports ={
    usuarioEntrarSala,
    getUsuariosSala,
    mensagemFormatada,
