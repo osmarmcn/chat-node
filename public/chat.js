@@ -3,6 +3,8 @@ const getLocalStorage = () => JSON.parse(localStorage.getItem('usuario')) ?? []
 
 const socket = io()
 const  {usuarionome, meuid} = Qs.parse(location.search, {ignoreQueryPrefix: true})
+const btnSair  = document.getElementById('btnSair')
+
 socket.emit('entrarSala', {usuarionome, meuid})
 
 inputTexto.addEventListener('keyup', function(e){
@@ -16,6 +18,17 @@ inputTexto.addEventListener('keyup', function(e){
 
         inputTexto.value = ''
     }
+})
+
+btnSair.addEventListener('click', function() {
+    
+    const sairSala = confirm('Certeza que deseja sair da sala?');
+    
+    if (sairSala) {
+        socket.emit('sairSala');
+        window.location.href='index.html';
+    }
+    
 })
 
 function criarElemento(nomeElemento, classeElemento){
@@ -50,12 +63,12 @@ function adcionarNovaMensagem(mensagem){
        
 
         if(minhaMensagem){
-            divMensagem = criarElemento('div', ['message', 'other-message', 'float-right'])
-            divDetalhes = criarElemento('div', ['message-data', 'text-right'])
+            divMensagem = criarElemento("div", ["message", "other-message", "float-right" ])
+            divDetalhes = criarElemento("div", ["message-data", "text-right",])
 
         }else{
-            divMensagem = criarElemento('div', ['message', 'my-message'])
-            divDetalhes = criarElemento('div', ['message-data'])
+            divMensagem = criarElemento("div", ["message", "my-message"])
+            divDetalhes = criarElemento("div", ["message-data"])
 
         }
 
@@ -74,3 +87,30 @@ function adcionarNovaMensagem(mensagem){
 socket.on('novaMensagem', (mensagem)=>{
     adcionarNovaMensagem(mensagem)
 })
+
+socket.on('salaUsuarios', ({sala, usuarios}) => {
+    document.getElementById("salaId").innerHTML = sala;
+    document.getElementById("listaUsuarios").innerHTML = '';
+    for (var usuario of usuarios) {
+        criarListaUsuarios(usuario.nome);
+    }
+});
+
+function criarListaUsuarios(usuarioNome) {
+    
+    var listaUsuarios = document.getElementById("listaUsuarios");
+    var liUsuario = criarElemento("li", ["clearfix"]);
+    var divDescricaoUsuario = criarElemento('div', ["about"]);
+    var divNomeUsuario = criarElemento('div', ["name"]);
+    var divStatusUsuario = criarElemento('div', ["status"]);
+    var iconeStatus = criarElemento("i" , ["fa", "fa-circle", "online"]);
+
+    iconeStatus.innerHTML = "online";
+    divNomeUsuario.innerHTML = usuarioNome;
+
+    divStatusUsuario.appendChild(iconeStatus);
+    divDescricaoUsuario.appendChild(divNomeUsuario);
+    divDescricaoUsuario.appendChild(divStatusUsuario);
+    liUsuario.appendChild(divDescricaoUsuario);
+    listaUsuarios.appendChild(liUsuario);
+}
