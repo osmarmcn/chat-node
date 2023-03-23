@@ -17,7 +17,7 @@ const io = socketIO(server)
 const nomeSala = "chat-empresas"
 
 io.on('connection', socket =>{
-    socket.on('entrarSala', ({usuarionome, meuid})=>{
+    socket.on('entrarSala', ({usuarionome, meuid}) =>{
         const usuario = usuarioEntrarSala(socket.id, usuarionome, nomeSala, meuid)
         socket.join(nomeSala)
 

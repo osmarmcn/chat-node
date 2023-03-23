@@ -63,7 +63,7 @@ function adcionarNovaMensagem(mensagem){
        
 
         if(minhaMensagem){
-            divMensagem = criarElemento("div", ["message", "other-message", "float-right" ])
+            divMensagem = criarElemento("div", ["message", "other-message" , "float-right" ])
             divDetalhes = criarElemento("div", ["message-data", "text-right",])
 
         }else{
@@ -92,6 +92,7 @@ socket.on('salaUsuarios', ({sala, usuarios}) => {
     document.getElementById("salaId").innerHTML = sala;
     document.getElementById("listaUsuarios").innerHTML = '';
     for (var usuario of usuarios) {
+        
         criarListaUsuarios(usuario.nome);
     }
 });
